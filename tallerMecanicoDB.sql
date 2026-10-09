@@ -1,12 +1,18 @@
-DROP DATABASE tallerMecanico;
+DROP DATABASE IF EXISTS tallerMecanico;
 CREATE DATABASE tallerMecanico;
 USE tallerMecanico;
 
 CREATE TABLE IF NOT EXISTS Empresa(
-	rutEmpresa INT PRIMARY KEY,
+	rutEmpresa VARCHAR(20) PRIMARY KEY,
     nombreEmpresa VARCHAR(50) NOT NULL,
-    telefonoEmpresa INT NOT NULL,
+    telefonoEmpresa VARCHAR(15) NOT NULL,
     correoEmpresa VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Cargo(
+	idCargo INT AUTO_INCREMENT PRIMARY KEY,
+    nombreCargo VARCHAR(50) NOT NULL,
+    descripcionCargo VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS estadot (
@@ -18,11 +24,38 @@ CREATE TABLE if not exists LOCALL(
 	idLocal INT AUTO_INCREMENT PRIMARY KEY,
     nombreLocal VARCHAR(100) NOT NULL,
     direccionLocal VARCHAR(100) NOT NULL,
-    telefonoLocal INT NOT NULL,
+    telefonoLocal VARCHAR(15) NOT NULL,
     rutEmpresa INT,
     
     FOREIGN KEY (rutEmpresa)
     REFERENCES Empresa(rutEmpresa)
+);
+
+CREATE TABLE IF NOT EXISTS Empleado(
+	rutEmpleado VARCHAR(20) PRIMARY KEY,
+    nombreEmpleado VARCHAR(50) NOT NULL,
+    apellidoEmpleado VARCHAR(50) NOT NULL,
+    telefonoEmpleado VARCHAR(15) NOT NULL,
+    correoEmpleado VARCHAR(50) NOT NULL,
+    idCargo INT NOT NULL,
+    idLocal INT NOT NULL,
+    
+    FOREIGN KEY (idCargo)
+    REFERENCES Cargo(idCargo),
+	
+    FOREIGN KEY (idLocal)
+    REFERENCES LOCALL(idLocal)
+);
+
+CREATE TABLE IF NOT EXISTS SUELDO(
+	rutEmpleado INT NOT NULL,
+    fechaSueldo DATE NOT NULL,
+    monto INT NOT NULL,
+    
+    PRIMARY KEY (rutEmpleado, fechaSueldo),
+    
+    FOREIGN KEY (rutEmpleado)
+    REFERENCES Empleado(rutEmpleado)
 );
 
 CREATE TABLE if not exists SERVICIO(
