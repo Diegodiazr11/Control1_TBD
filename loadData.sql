@@ -41,14 +41,7 @@ INSERT INTO Cargo (idCargo, nombreCargo, descripcionCargo) VALUES
 (15, 'Gerente de Operaciones', 'Supervisión general de la red de talleres');
 
 -- ---------------------------------------------------------------------
--- 3. Estadop (2)
--- ---------------------------------------------------------------------
-INSERT INTO Estadop (id_estadop, nombre_estado) VALUES
-(1, 'Aceptado'),
-(2, 'Rechazado');
-
--- ---------------------------------------------------------------------
--- 4. Estadot (3)
+-- 3. Estadot (3)
 -- ---------------------------------------------------------------------
 INSERT INTO Estadot (id_estadot, nombre_estado) VALUES
 (1, 'Iniciado'),
@@ -56,7 +49,7 @@ INSERT INTO Estadot (id_estadot, nombre_estado) VALUES
 (3, 'Terminado');
 
 -- ---------------------------------------------------------------------
--- 5. LOCALL (15)
+-- 4. LOCALL (15)
 -- ---------------------------------------------------------------------
 INSERT INTO LOCALL (idLocal, nombreLocal, direccionLocal, telefonoLocal, rutEmpresa) VALUES
 (1, 'Taller Central Santiago', 'Av. Vicuña Mackenna 4500', '+56225554433', '76123456-7'),
@@ -76,7 +69,7 @@ INSERT INTO LOCALL (idLocal, nombreLocal, direccionLocal, telefonoLocal, rutEmpr
 (15, 'Sucursal Puente Alto', 'Av. Concha y Toro 2500', '+56224445566', '76111222-3');
 
 -- ---------------------------------------------------------------------
--- 6. Empleado (16)
+-- 5. Empleado (16)
 -- ---------------------------------------------------------------------
 INSERT INTO Empleado (rutEmpleado, nombreEmpleado, apellidoEmpleado, telefonoEmpleado, correoEmpleado, idCargo, idLocal) VALUES
 ('15234567-8', 'Carlos', 'Pérez', '+56911223344', 'cperez@mastertaller.cl', 1, 1),
@@ -97,7 +90,7 @@ INSERT INTO Empleado (rutEmpleado, nombreEmpleado, apellidoEmpleado, telefonoEmp
 ('21444555-0', 'Benjamín', 'Gatica', '+56977889911', 'bgatica@mastertaller.cl', 2, 2);
 
 -- ---------------------------------------------------------------------
--- 7. SUELDO (16)
+-- 6. SUELDO (16)
 -- ---------------------------------------------------------------------
 INSERT INTO SUELDO (rutEmpleado, fechaSueldo, monto) VALUES
 ('15234567-8', '2026-09-01', 1350000),
@@ -118,7 +111,7 @@ INSERT INTO SUELDO (rutEmpleado, fechaSueldo, monto) VALUES
 ('21444555-0', '2026-09-01', 760000);
 
 -- ---------------------------------------------------------------------
--- 8. SERVICIO (15)
+-- 7. SERVICIO (15)
 -- ---------------------------------------------------------------------
 INSERT INTO SERVICIO (idServicio, nombreServicio, descripcionServicio) VALUES
 (1, 'Afinamiento Completo', 'Cambio de bujías, filtros y revisión de inyección'),
@@ -138,7 +131,7 @@ INSERT INTO SERVICIO (idServicio, nombreServicio, descripcionServicio) VALUES
 (15, 'Tratamiento Cerómico de Pintura', 'Pulido y protección de carrocería');
 
 -- ---------------------------------------------------------------------
--- 9. SERVICIO_LOCAL (15)
+-- 8. SERVICIO_LOCAL (15)
 -- ---------------------------------------------------------------------
 INSERT INTO SERVICIO_LOCAL (fechaServicio, idServicio, idLocal) VALUES
 ('2026-01-10 08:00:00', 1, 1),
@@ -158,7 +151,7 @@ INSERT INTO SERVICIO_LOCAL (fechaServicio, idServicio, idLocal) VALUES
 ('2026-02-28 10:30:00', 15, 5);
 
 -- ---------------------------------------------------------------------
--- 10. TAREA (15)
+-- 9. TAREA (15)
 -- ---------------------------------------------------------------------
 INSERT INTO TAREA (idTarea, nombreTarea, fechaInicioTarea, fechaFinTarea, descripcionTarea, costoTarea) VALUES
 (1, 'Desmontaje de culata', '2021-06-01 09:00:00', '2021-06-01 12:00:00', 'Extracción de componentes superiores del motor', 45000),
@@ -169,4 +162,100 @@ INSERT INTO TAREA (idTarea, nombreTarea, fechaInicioTarea, fechaFinTarea, descri
 (6, 'Cambio de kit distribución', '2021-06-10 08:00:00', '2021-06-10 13:00:00', 'Instalación de correa dentada y tensor', 85000),
 (7, 'Rectificación de discos', '2021-06-15 14:00:00', '2021-06-15 16:00:00', 'Mecanizado de discos de freno', 30000),
 (8, 'Prueba de banco alternador', '2021-06-20 09:30:00', '2021-06-20 10:30:00', 'Verificación de carga eléctrica', 22000),
-(9, 'Limpieza de inyectores', '2021-06-25 10:00:00', '2021-06-25 13:00:
+(9, 'Limpieza de inyectores', '2021-06-25 10:00:00', '2021-06-25 13:00:00', 'Lavado ultrasónico de flauta', 40000),
+(10, 'Cambio de amortiguadores', '2021-07-02 08:30:00', '2021-07-02 12:30:00', 'Sustitución suspensión trasera', 55000),
+(11, 'Regulación de freno de mano', '2021-07-05 15:00:00', '2021-07-05 16:00:00', 'Ajuste de piola de estacionamiento', 12000),
+(12, 'Cambio de bujías de Iridio', '2021-07-10 09:00:00', '2021-07-10 10:15:00', 'Sustitución de bujías de encendido', 35000),
+(13, 'Recarga aire acondicionado', '2021-07-15 11:00:00', '2021-07-15 12:30:00', 'Inyección de gas refrigerante', 45000),
+(14, 'Cambio de empaquetadura', '2021-07-20 08:00:00', '2021-07-20 14:00:00', 'Cambio sello de carter y tapa válvulas', 50000),
+(15, 'Inspección pre-viaje', '2021-07-25 16:00:00', '2021-07-25 17:00:00', 'Revisión de fluidos, luces y neumáticos', 15000);
+
+-- ---------------------------------------------------------------------
+-- 10. Presupuesto (15)
+-- ---------------------------------------------------------------------
+INSERT INTO Presupuesto (id_presupuesto, id_local, estado_p, fecha_emision, total) VALUES
+(1, 1, 'Aceptado', '2021-06-01 08:00:00', 70000.00),
+(2, 1, 'Aceptado', '2021-06-05 09:30:00', 103000.00),
+(3, 2, 'Aceptado', '2021-07-10 10:00:00', 85000.00),
+(4, 2, 'Rechazado', '2022-03-12 11:00:00', 45000.00),
+(5, 3, 'Aceptado', '2022-06-15 08:30:00', 120000.00),
+(6, 3, 'Aceptado', '2023-01-20 14:00:00', 55000.00),
+(7, 4, 'Rechazado', '2023-04-18 09:00:00', 30000.00),
+(8, 4, 'Aceptado', '2023-09-22 10:15:00', 95000.00),
+(9, 5, 'Aceptado', '2024-02-14 11:30:00', 60000.00),
+(10, 5, 'Aceptado', '2024-08-05 08:00:00', 110000.00),
+(11, 1, 'Aceptado', '2025-01-10 09:00:00', 75000.00),
+(12, 2, 'Aceptado', '2025-05-19 15:00:00', 130000.00),
+(13, 3, 'Rechazado', '2025-10-01 10:00:00', 40000.00),
+(14, 4, 'Aceptado', '2026-03-15 12:00:00', 85000.00),
+(15, 5, 'Aceptado', '2026-06-20 09:00:00', 95000.00);
+
+-- ---------------------------------------------------------------------
+-- 11. Detalle_presupuesto (20)
+-- ---------------------------------------------------------------------
+INSERT INTO Detalle_presupuesto (id_presupuesto, id_tarea, cantidad, precio_estimado) VALUES
+(1, 1, 1, 45000.00),
+(1, 2, 1, 25000.00),
+(2, 4, 1, 18000.00),
+(2, 5, 2, 30000.00),
+(2, 3, 1, 55000.00),
+(3, 6, 1, 85000.00),
+(4, 7, 1, 45000.00),
+(5, 8, 1, 22000.00),
+(5, 9, 1, 40000.00),
+(5, 10, 1, 58000.00),
+(6, 11, 1, 55000.00),
+(7, 12, 1, 30000.00),
+(8, 13, 1, 45000.00),
+(8, 14, 1, 50000.00),
+(9, 15, 1, 60000.00),
+(10, 1, 1, 45000.00),
+(10, 6, 1, 65000.00),
+(11, 2, 1, 75000.00),
+(12, 10, 2, 130000.00),
+(15, 3, 1, 95000.00);
+
+-- ---------------------------------------------------------------------
+-- 12. Trabajo (15)
+-- ---------------------------------------------------------------------
+INSERT INTO Trabajo (id_trabajo, id_presupuesto, id_local, id_estadot, fecha_inicio, fecha_fin) VALUES
+(1, 1, 1, 3, '2021-06-01 08:30:00', '2021-06-01 14:30:00'),
+(2, 2, 1, 3, '2021-06-05 10:00:00', '2021-06-05 12:30:00'),
+(3, 3, 2, 3, '2021-07-10 09:00:00', '2021-07-10 16:00:00'),
+(4, 5, 3, 2, '2022-06-15 09:00:00', NULL),
+(5, 6, 3, 1, '2023-01-20 15:00:00', NULL),
+(6, 8, 4, 3, '2023-09-22 11:00:00', '2023-09-22 16:00:00'),
+(7, 9, 5, 2, '2024-02-14 12:00:00', NULL),
+(8, 10, 5, 3, '2024-08-05 09:00:00', '2024-08-05 18:00:00'),
+(9, 11, 1, 1, '2025-01-10 10:00:00', NULL),
+(10, 12, 2, 2, '2025-05-19 16:00:00', NULL),
+(11, 14, 4, 3, '2026-03-15 13:00:00', '2026-03-15 17:00:00'),
+(12, 15, 5, 2, '2026-06-20 10:00:00', NULL),
+(13, NULL, 1, 1, '2021-06-18 08:00:00', NULL),
+(14, NULL, 2, 3, '2021-08-11 09:00:00', '2021-08-11 11:00:00'),
+(15, NULL, 3, 2, '2021-09-05 08:30:00', NULL);
+
+-- ---------------------------------------------------------------------
+-- 13. Detalle_trabajo (20)
+-- ---------------------------------------------------------------------
+INSERT INTO Detalle_trabajo (id_detalle_trabajo, id_trabajo, id_tarea, id_estadot, costo, horas_dedicadas) VALUES
+(1, 1, 1, 3, 45000.00, 3.00),
+(2, 1, 2, 3, 25000.00, 1.50),
+(3, 2, 4, 3, 18000.00, 1.00),
+(4, 2, 5, 3, 30000.00, 1.50),
+(5, 3, 6, 3, 85000.00, 5.00),
+(6, 4, 8, 2, 22000.00, 2.00),
+(7, 4, 9, 2, 40000.00, 1.00),
+(8, 4, 10, 2, 58000.00, 1.00),
+(9, 5, 11, 1, 55000.00, 0.00),
+(10, 6, 13, 3, 45000.00, 2.00),
+(11, 6, 14, 3, 50000.00, 3.00),
+(12, 7, 15, 2, 60000.00, 1.00),
+(13, 8, 1, 3, 45000.00, 3.00),
+(14, 8, 6, 3, 65000.00, 4.00),
+(15, 9, 2, 1, 75000.00, 0.00),
+(16, 10, 10, 2, 130000.00, 2.00),
+(17, 11, 3, 3, 85000.00, 1.50),
+(18, 13, 4, 1, 18000.00, 0.00),
+(19, 14, 5, 3, 15000.00, 1.50),
+(20, 15, 3, 2, 20000.00, 0.50);
