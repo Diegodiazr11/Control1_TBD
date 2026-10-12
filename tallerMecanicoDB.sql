@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS tallerMecanico;
+	DROP DATABASE IF EXISTS tallerMecanico;
 CREATE DATABASE tallerMecanico;
 USE tallerMecanico;
 
