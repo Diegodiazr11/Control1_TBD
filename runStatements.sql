@@ -1,5 +1,70 @@
 
--- Empleado con el mayor sueldo por cargo
+-- 1. Presupuesto más caro realizado por año y valor total
+SELECT
+    YEAR(P.fecha_emision) AS anio,
+    P.id_presupuesto,
+    P.total AS valor_total
+FROM Presupuesto P
+WHERE P.total = (
+    SELECT MAX(P2.total)
+    FROM Presupuesto P2
+    WHERE YEAR(P2.fecha_emision) = YEAR(P.fecha_emision)
+)
+ORDER BY anio;
+
+
+-- 2. Empleado que participó en más trabajos el 2020
+
+
+
+-- 3. Trabajos finalizados por mes durante el 2020
+SELECT
+    MONTH(T.fecha_fin) AS mes,
+    COUNT(*) AS trabajos_finalizados
+FROM Trabajo T
+JOIN Estadot E
+    ON T.id_estadot = E.id_estadot
+WHERE YEAR(T.fecha_fin) = 2020
+  AND E.nombre_estado = 'Terminado'
+GROUP BY MONTH(T.fecha_fin)
+ORDER BY mes;
+
+
+
+-- 4. Empleado con más presupuestos rechazados
+
+
+
+-- 5. Tarea más realizada por trabajo
+
+WITH tareas_por_trabajo AS (
+    SELECT
+        DT.id_trabajo,
+        DT.id_tarea,
+        TA.nombreTarea,
+        COUNT(*) AS cantidad,
+        DENSE_RANK() OVER (
+            PARTITION BY DT.id_trabajo
+            ORDER BY COUNT(*) DESC
+        ) AS posicion
+    FROM Detalle_trabajo DT
+    JOIN TAREA TA
+        ON DT.id_tarea = TA.idTarea
+    GROUP BY
+        DT.id_trabajo,
+        DT.id_tarea,
+        TA.nombreTarea
+)
+SELECT
+    id_trabajo,
+    id_tarea,
+    nombreTarea,
+    cantidad
+FROM tareas_por_trabajo
+WHERE posicion = 1
+ORDER BY id_trabajo;
+
+-- 6. Empleado con el mayor sueldo por cargo
 SELECT 
     C.nombreCargo,
     E.nombreEmpleado,
@@ -17,7 +82,7 @@ WHERE S.monto = (
 GROUP BY C.idCargo, C.nombreCargo, E.rutEmpleado, E.nombreEmpleado, E.apellidoEmpleado, S.monto
 ORDER BY mayor_sueldo DESC;
 
--- Presupuesto con más actividades a realizar por mes en los últimos 2 años
+-- 7. Presupuesto con más actividades a realizar por mes en los últimos 2 años
 
 SELECT 
     YEAR(P.fecha_emision) AS anno,
@@ -30,7 +95,7 @@ WHERE P.fecha_emision >= DATE_SUB(NOW(), INTERVAL 2 YEAR)
 GROUP BY YEAR(P.fecha_emision), MONTH(P.fecha_emision), P.id_presupuesto
 ORDER BY anno DESC, mes DESC, total_actividades DESC;
 
--- Trabajo más rápido finalizado por mes durante el 2021
+-- 8. Trabajo más rápido finalizado por mes durante el 2021
 
 SELECT 
     MONTH(T.fecha_inicio) AS mes,
@@ -51,7 +116,7 @@ WHERE YEAR(T.fecha_inicio) = 2021
 GROUP BY MONTH(T.fecha_inicio), T.id_trabajo, T.fecha_inicio, T.fecha_fin
 ORDER BY mes;
 
--- Vehículo con el mayor número de tareas realizadas sobre este
+-- 9. Vehículo con el mayor número de tareas realizadas sobre este
 
 SELECT 
     T.id_trabajo,
@@ -64,7 +129,7 @@ ORDER BY total_tareas_realizadas DESC
 LIMIT 1;
 
 
--- Cantidad de presupuestos aceptados por local por mes, los últimos 5 años
+-- 10. Cantidad de presupuestos aceptados por local por mes, los últimos 5 años
 
 SELECT 
     L.nombreLocal,
