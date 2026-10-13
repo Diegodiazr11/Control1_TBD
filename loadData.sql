@@ -1,7 +1,7 @@
 USE tallerMecanico;
 
 -- ---------------------------------------------------------------------
--- 1. Empresa (15)
+-- 1. Empresa 
 -- ---------------------------------------------------------------------
 INSERT INTO Empresa (rutEmpresa, nombreEmpresa, telefonoEmpresa, correoEmpresa) VALUES
 ('76123456-7', 'Servicios Automotrices Master Ltda', '+56223445566', 'contacto@mastertaller.cl'),
@@ -21,7 +21,7 @@ INSERT INTO Empresa (rutEmpresa, nombreEmpresa, telefonoEmpresa, correoEmpresa) 
 ('77222333-4', 'Soluciones Automotrices Globales', '+56227889900', 'global@autofix.cl');
 
 -- ---------------------------------------------------------------------
--- 2. Cargo (15)
+-- 2. Cargo 
 -- ---------------------------------------------------------------------
 INSERT INTO Cargo (idCargo, nombreCargo, descripcionCargo) VALUES
 (1, 'Mecánico Senior', 'Encargado de reparaciones complejas de motor'),
@@ -41,7 +41,7 @@ INSERT INTO Cargo (idCargo, nombreCargo, descripcionCargo) VALUES
 (15, 'Gerente de Operaciones', 'Supervisión general de la red de talleres');
 
 -- ---------------------------------------------------------------------
--- 3. Estadot (3)
+-- 3. Estadot 
 -- ---------------------------------------------------------------------
 INSERT INTO Estadot (id_estadot, nombre_estado) VALUES
 (1, 'Iniciado'),
@@ -49,7 +49,7 @@ INSERT INTO Estadot (id_estadot, nombre_estado) VALUES
 (3, 'Terminado');
 
 -- ---------------------------------------------------------------------
--- 4. LOCALL (15)
+-- 4. LOCALL 
 -- ---------------------------------------------------------------------
 INSERT INTO LOCALL (idLocal, nombreLocal, direccionLocal, telefonoLocal, rutEmpresa) VALUES
 (1, 'Taller Central Santiago', 'Av. Vicuña Mackenna 4500', '+56225554433', '76123456-7'),
@@ -120,6 +120,33 @@ INSERT INTO SUELDO (rutEmpleado, fechaSueldo, monto) VALUES
 ('19333444-5', '2026-09-01', 680000),
 ('17888777-6', '2026-09-01', 1250000),
 ('21444555-0', '2026-09-01', 760000),
+('17345678-9', '2026-08-01', 820000),
+('15234567-8', '2026-08-01', 1300000),
+('14123456-5', '2026-08-01', 1550000),
+('14123456-5', '2026-07-01', 1500000),
+('19111222-3', '2026-08-01', 1350000),
+('17888777-6', '2026-08-01', 1200000),
+('12345678-5', '2026-09-01', 1100000),
+('12345678-5', '2026-08-01', 1050000),
+('12456789-0', '2026-09-01', 1100000),
+('13567890-1', '2026-09-01', 990000),
+('13678901-2', '2026-09-01', 1020000),
+('14789012-3', '2026-09-01', 1200000),
+('14890123-4', '2026-09-01', 900000),
+('15901234-5', '2026-09-01', 950000),
+('16012345-6', '2026-09-01', 1000000),
+('16123456-7', '2026-09-01', 1450000),
+('17234567-8', '2026-09-01', 600000),
+('17345679-0', '2026-09-01', 640000),
+('18456789-1', '2026-09-01', 1080000),
+('18567890-2', '2026-09-01', 500000),
+('19678901-3', '2026-09-01', 3200000),
+('19789012-4', '2026-09-01', 1480000),
+('19789012-4', '2026-08-01', 1420000),
+('19789012-4', '2026-07-01', 1400000),
+('20890123-5', '2026-09-01', 1100000),
+('20901234-6', '2026-09-01', 750000),
+('21012345-7', '2026-09-01', 1500000);
 ('18654321-7', '2026-09-01', 1180000),
 ('17654322-8', '2026-09-01', 1100000),
 ('19654323-9', '2026-09-01', 1080000),
@@ -131,8 +158,9 @@ INSERT INTO SUELDO (rutEmpleado, fechaSueldo, monto) VALUES
 ('22654329-5', '2026-09-01', 650000),
 ('13654330-6', '2026-09-01', 2100000);
 
+
 -- ---------------------------------------------------------------------
--- 7. SERVICIO (15)
+-- 7. SERVICIO 
 -- ---------------------------------------------------------------------
 INSERT INTO SERVICIO (idServicio, nombreServicio, descripcionServicio) VALUES
 (1, 'Afinamiento Completo', 'Cambio de bujías, filtros y revisión de inyección'),
@@ -151,8 +179,8 @@ INSERT INTO SERVICIO (idServicio, nombreServicio, descripcionServicio) VALUES
 (14, 'Cambio de Sistema de Escape', 'Sustitución de silenciadores y convertidor catalítico'),
 (15, 'Tratamiento Cerómico de Pintura', 'Pulido y protección de carrocería');
 
--- ---------------------------------------------------------------------
--- 8. SERVICIO_LOCAL (25)
+-- ---------------------------------------------------------------------  
+-- 8. SERVICIO_LOCAL 
 -- ---------------------------------------------------------------------
 INSERT INTO SERVICIO_LOCAL (fechaServicio, idServicio, idLocal) VALUES
 ('2026-01-10 08:00:00', 1, 1),
@@ -182,7 +210,7 @@ INSERT INTO SERVICIO_LOCAL (fechaServicio, idServicio, idLocal) VALUES
 ('2024-11-22 11:00:00', 1, 15);
 
 -- ---------------------------------------------------------------------
--- 9. TAREA (15)
+-- 9. TAREA 
 -- ---------------------------------------------------------------------
 INSERT INTO TAREA (idTarea, nombreTarea, fechaInicioTarea, fechaFinTarea, descripcionTarea, costoTarea) VALUES
 (1, 'Desmontaje de culata', '2021-06-01 09:00:00', '2021-06-01 12:00:00', 'Extracción de componentes superiores del motor', 45000),
@@ -201,7 +229,7 @@ INSERT INTO TAREA (idTarea, nombreTarea, fechaInicioTarea, fechaFinTarea, descri
 (14, 'Cambio de empaquetadura', '2021-07-20 08:00:00', '2021-07-20 14:00:00', 'Cambio sello de carter y tapa válvulas', 50000),
 (15, 'Inspección pre-viaje', '2021-07-25 16:00:00', '2021-07-25 17:00:00', 'Revisión de fluidos, luces y neumáticos', 15000);
 
--- ---------------------------------------------------------------------
+
 -- 10. Presupuesto (25)
 -- ---------------------------------------------------------------------
 INSERT INTO Presupuesto (id_presupuesto, id_local, idEmpleado, estado_p, fecha_emision, total) VALUES
@@ -383,3 +411,4 @@ INSERT INTO Detalle_trabajo
 (50, 29, 2, 3, 'Esteban González', 25000.00, 1.00),
 (51, 30, 15, 3, 'Benjamín Gatica', 15000.00, 0.50),
 (52, 30, 15, 3, 'Benjamín Gatica', 15000.00, 0.50);
+
