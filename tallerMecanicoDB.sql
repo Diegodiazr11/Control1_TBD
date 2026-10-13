@@ -32,30 +32,41 @@ CREATE TABLE IF NOT EXISTS LOCALL(
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Presupuesto (
-    id_presupuesto INT AUTO_INCREMENT PRIMARY KEY,
-    id_local INT NOT NULL,
-    estado_p VARCHAR(20) NOT NULL, 
-    fecha_emision DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    total DECIMAL(10, 2) DEFAULT 0.00,
-    
-    CONSTRAINT fk_presupuesto_local FOREIGN KEY (id_local) 
-        REFERENCES LOCALL(idLocal) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS Empleado(
-	rutEmpleado VARCHAR(20) PRIMARY KEY,
+    idEmpleado INT AUTO_INCREMENT PRIMARY KEY,
+    rutEmpleado VARCHAR(20) NOT NULL UNIQUE,
     nombreEmpleado VARCHAR(50) NOT NULL,
     apellidoEmpleado VARCHAR(50) NOT NULL,
     telefonoEmpleado VARCHAR(15) NOT NULL,
     correoEmpleado VARCHAR(50) NOT NULL,
+
+    tipoEmpleado ENUM('Trabajador', 'Jefe de proyecto') NOT NULL
+        DEFAULT 'Trabajador',
+
     idCargo INT NOT NULL,
     idLocal INT NOT NULL,
-    
+
     FOREIGN KEY (idCargo)
-    REFERENCES Cargo(idCargo),
+        REFERENCES Cargo(idCargo),
+
     FOREIGN KEY (idLocal)
-    REFERENCES LOCALL(idLocal)
+        REFERENCES LOCALL(idLocal)
+);
+
+CREATE TABLE IF NOT EXISTS Presupuesto (
+    id_presupuesto INT AUTO_INCREMENT PRIMARY KEY,
+    id_local INT NOT NULL,
+    idEmpleado INT NOT NULL,
+    estado_p VARCHAR(20) NOT NULL, 
+    fecha_emision DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    total DECIMAL(10, 2) DEFAULT 0.00,
+
+    CONSTRAINT fk_presupuesto_local FOREIGN KEY (id_local)
+        REFERENCES LOCALL(idLocal) ON DELETE CASCADE ON UPDATE CASCADE,
+
+    CONSTRAINT fk_presupuesto_empleado FOREIGN KEY (idEmpleado)
+        REFERENCES Empleado(idEmpleado) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Trabajo (
@@ -63,15 +74,23 @@ CREATE TABLE IF NOT EXISTS Trabajo (
     id_presupuesto INT UNIQUE,
     id_local INT NOT NULL,
     id_estadot INT NOT NULL,
+
+    id_jefeProyecto INT NOT NULL,
+
     fecha_inicio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_fin DATETIME NULL,
-    
-    CONSTRAINT fk_trabajo_presupuesto FOREIGN KEY (id_presupuesto) 
+
+    CONSTRAINT fk_trabajo_presupuesto FOREIGN KEY (id_presupuesto)
         REFERENCES Presupuesto(id_presupuesto) ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT fk_trabajo_local FOREIGN KEY (id_local) 
+
+    CONSTRAINT fk_trabajo_local FOREIGN KEY (id_local)
         REFERENCES LOCALL(idLocal) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_trabajo_estadot FOREIGN KEY (id_estadot) 
-        REFERENCES Estadot(id_estadot) ON DELETE RESTRICT ON UPDATE CASCADE
+
+    CONSTRAINT fk_trabajo_estadot FOREIGN KEY (id_estadot)
+        REFERENCES Estadot(id_estadot) ON DELETE RESTRICT ON UPDATE CASCADE,
+
+    CONSTRAINT fk_trabajo_jefeProyecto FOREIGN KEY (id_jefeProyecto)
+        REFERENCES Empleado(idEmpleado) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS TAREA(
@@ -103,6 +122,8 @@ CREATE TABLE IF NOT EXISTS Detalle_trabajo (
     id_trabajo INT NOT NULL,
     id_tarea INT NOT NULL,
     id_estadot INT NOT NULL,
+    encargado_tarea VARCHAR(100) NOT NULL,
+
     costo DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     horas_dedicadas DECIMAL(5, 2) DEFAULT 0.00,
     
@@ -121,7 +142,7 @@ CREATE TABLE IF NOT EXISTS SUELDO(
     
     PRIMARY KEY (rutEmpleado, fechaSueldo),
     FOREIGN KEY (rutEmpleado)
-    REFERENCES Empleado(rutEmpleado)
+        REFERENCES Empleado(rutEmpleado)
 );
 
 CREATE TABLE IF NOT EXISTS SERVICIO(

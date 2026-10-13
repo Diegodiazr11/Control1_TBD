@@ -1,4 +1,3 @@
-
 -- 1. Presupuesto más caro realizado por año y valor total
 SELECT
     YEAR(P.fecha_emision) AS anio,
@@ -14,7 +13,23 @@ ORDER BY anio;
 
 
 -- 2. Empleado que participó en más trabajos el 2020
-
+SELECT
+    E.idEmpleado,
+    E.rutEmpleado,
+    E.nombreEmpleado,
+    E.apellidoEmpleado,
+    COUNT(*) AS total_trabajos
+FROM Trabajo T
+JOIN Empleado E
+    ON T.id_jefeProyecto = E.idEmpleado
+WHERE YEAR(T.fecha_inicio) = 2020
+GROUP BY
+    E.idEmpleado,
+    E.rutEmpleado,
+    E.nombreEmpleado,
+    E.apellidoEmpleado
+ORDER BY total_trabajos DESC
+LIMIT 1;
 
 
 -- 3. Trabajos finalizados por mes durante el 2020
@@ -30,13 +45,44 @@ GROUP BY MONTH(T.fecha_fin)
 ORDER BY mes;
 
 
-
 -- 4. Empleado con más presupuestos rechazados
 
+WITH rechazados_empleado AS (
+    SELECT
+        E.idEmpleado,
+        E.rutEmpleado,
+        E.nombreEmpleado,
+        E.apellidoEmpleado,
+        COUNT(*) AS presupuestos_rechazados
+    FROM Presupuesto P
+    JOIN Empleado E
+        ON P.id_local = E.idLocal
+    WHERE P.estado_p = 'Rechazado'
+      AND E.tipoEmpleado = 'Jefe de proyecto'
+    GROUP BY
+        E.idEmpleado,
+        E.rutEmpleado,
+        E.nombreEmpleado,
+        E.apellidoEmpleado
+),
+ranking_rechazados AS (
+    SELECT *,
+        DENSE_RANK() OVER (
+            ORDER BY presupuestos_rechazados DESC
+        ) AS posicion
+    FROM rechazados_empleado
+)
+SELECT
+    idEmpleado,
+    rutEmpleado,
+    nombreEmpleado,
+    apellidoEmpleado,
+    presupuestos_rechazados
+FROM ranking_rechazados
+WHERE posicion = 1;
 
 
 -- 5. Tarea más realizada por trabajo
-
 WITH tareas_por_trabajo AS (
     SELECT
         DT.id_trabajo,
