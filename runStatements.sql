@@ -1,3 +1,114 @@
+-- 1. Presupuesto más caro realizado por año y valor total
+SELECT
+    YEAR(P.fecha_emision) AS anio,
+    P.id_presupuesto,
+    P.total AS valor_total
+FROM Presupuesto P
+WHERE P.total = (
+    SELECT MAX(P2.total)
+    FROM Presupuesto P2
+    WHERE YEAR(P2.fecha_emision) = YEAR(P.fecha_emision)
+)
+ORDER BY anio;
+
+
+-- 2. Empleado que participó en más trabajos el 2020
+SELECT
+    E.idEmpleado,
+    E.rutEmpleado,
+    E.nombreEmpleado,
+    E.apellidoEmpleado,
+    COUNT(*) AS total_trabajos
+FROM Trabajo T
+JOIN Empleado E
+    ON T.id_jefeProyecto = E.idEmpleado
+WHERE YEAR(T.fecha_inicio) = 2020
+GROUP BY
+    E.idEmpleado,
+    E.rutEmpleado,
+    E.nombreEmpleado,
+    E.apellidoEmpleado
+ORDER BY total_trabajos DESC
+LIMIT 1;
+
+
+-- 3. Trabajos finalizados por mes durante el 2020
+SELECT
+    MONTH(T.fecha_fin) AS mes,
+    COUNT(*) AS trabajos_finalizados
+FROM Trabajo T
+JOIN Estadot E
+    ON T.id_estadot = E.id_estadot
+WHERE YEAR(T.fecha_fin) = 2020
+  AND E.nombre_estado = 'Terminado'
+GROUP BY MONTH(T.fecha_fin)
+ORDER BY mes;
+
+
+-- 4. Empleado con más presupuestos rechazados
+
+WITH rechazados_empleado AS (
+    SELECT
+        E.idEmpleado,
+        E.rutEmpleado,
+        E.nombreEmpleado,
+        E.apellidoEmpleado,
+        COUNT(*) AS presupuestos_rechazados
+    FROM Presupuesto P
+    JOIN Empleado E
+        ON P.id_local = E.idLocal
+    WHERE P.estado_p = 'Rechazado'
+      AND E.tipoEmpleado = 'Jefe de proyecto'
+    GROUP BY
+        E.idEmpleado,
+        E.rutEmpleado,
+        E.nombreEmpleado,
+        E.apellidoEmpleado
+),
+ranking_rechazados AS (
+    SELECT *,
+        DENSE_RANK() OVER (
+            ORDER BY presupuestos_rechazados DESC
+        ) AS posicion
+    FROM rechazados_empleado
+)
+SELECT
+    idEmpleado,
+    rutEmpleado,
+    nombreEmpleado,
+    apellidoEmpleado,
+    presupuestos_rechazados
+FROM ranking_rechazados
+WHERE posicion = 1;
+
+
+-- 5. Tarea más realizada por trabajo
+WITH tareas_por_trabajo AS (
+    SELECT
+        DT.id_trabajo,
+        DT.id_tarea,
+        TA.nombreTarea,
+        COUNT(*) AS cantidad,
+        DENSE_RANK() OVER (
+            PARTITION BY DT.id_trabajo
+            ORDER BY COUNT(*) DESC
+        ) AS posicion
+    FROM Detalle_trabajo DT
+    JOIN TAREA TA
+        ON DT.id_tarea = TA.idTarea
+    GROUP BY
+        DT.id_trabajo,
+        DT.id_tarea,
+        TA.nombreTarea
+)
+SELECT
+    id_trabajo,
+    id_tarea,
+    nombreTarea,
+    cantidad
+FROM tareas_por_trabajo
+WHERE posicion = 1
+ORDER BY id_trabajo;
 
 -- =====================================================================
 -- 6. Empleado con el mayor sueldo por cargo
@@ -49,6 +160,7 @@ WITH PresupuestoMasAct AS (
     WHERE P.fecha_emision >= DATE_SUB(NOW(), INTERVAL 2 YEAR)
     GROUP BY YEAR(P.fecha_emision), MONTH(P.fecha_emision), P.id_presupuesto, P.fecha_emision
 )
+
 SELECT
     anno,
     mes,
@@ -142,4 +254,5 @@ WHERE P.estado_p = 'Aceptado'
   AND P.fecha_emision >= DATE_SUB(NOW(), INTERVAL 5 YEAR)
 GROUP BY L.idLocal, L.nombreLocal, YEAR(P.fecha_emision), MONTH(P.fecha_emision)
 ORDER BY anio DESC, mes DESC, total_presupuestos_aceptados DESC, L.idLocal;
+ 
  
